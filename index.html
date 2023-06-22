@@ -3,9 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vite App</title>
+  <title>Todo List</title>
 </head>
 
 <body>
@@ -16,25 +15,28 @@
       </div>
       <div class="projects">
         <div class="projectsWrapper">
-          <h2>Projects</h2>
-          <button>Add Project</button>
-          <div class="projectsContainer">
+          <div class="controls">
+            <h2>Projects</h2>
+            <button id="add-project-button">Add Project</button>
+          </div>
+          <div id="projects-container" class="projectsContainer">
           </div>
         </div>
 
       </div>
       <div class="todos">
         <div class="todosWrapper">
-          <h2>Inbox</h2>
-          <div class="todosContainer">
-            <button>Add Todo</button>
+          <div class="controls">
+            <h2 id="current-project-title"></h2>
+            <button id="add-todo-button">Add Todo</button>
+          </div>
+          <div id="todos-container" class="todosContainer">
           </div>
         </div>
       </div>
     </div>
   </div>
   <script type="module" src="/main.js"></script>
-  <script type="module" src="/app.js"></script>
 </body>
 
 </html>
