@@ -1,12 +1,38 @@
 import { projectModule } from './app.js';
-import { addTodoToCurrentProject, createTodo } from './todos.js';
+import { createTodo } from './todos.js';
+
+const createTodoElement = (todo) => {
+  const element = document.createElement('div');
+
+  element.classList.add('todo');
+  element.innerHTML = `
+      <h3>${todo.title}</h3>
+      <p>${todo.description}</p>
+      <p>Project: ${todo.project}</p>
+      <p>Due Date: ${todo.dueDate}</p>
+      <p>Priority: ${todo.priority}</p>
+      <p>Is Done: ${todo.status}</p>
+    `;
+
+  return element;
+};
 
 const currentProjectTitleElement = document.querySelector('#current-project-title');
 const projectsContainer = document.querySelector('#projects-container');
 const todosContainer = document.querySelector('#todos-container');
 
-const currentProjectTitle = projectModule.getCurrentProject();
-currentProjectTitleElement.textContent = currentProjectTitle;
+let currentProject = projectModule.getCurrentProject();
+currentProjectTitleElement.textContent = currentProject.title;
+
+const renderTodos = () => {
+  todosContainer.innerHTML = '';
+  currentProject.todos.forEach((todo) => {
+    const element = createTodoElement(todo);
+    todosContainer.appendChild(element);
+  });
+};
+
+renderTodos();
 
 const renderProject = (project) => {
   const element = document.createElement('div');
@@ -15,7 +41,9 @@ const renderProject = (project) => {
 
   element.addEventListener('click', () => {
     projectModule.setCurrentProject(project);
+    currentProject = projectModule.getCurrentProject();
     renderNewProjectTitle(project.title);
+    renderTodos();
   });
 
   projectsContainer.appendChild(element);
@@ -50,29 +78,14 @@ addProjectButton.addEventListener('click', () => {
 const addTodoButton = document.querySelector('#add-todo-button');
 
 addTodoButton.addEventListener('click', () => {
-  const renderTodo = (todo) => {
-    const element = document.createElement('div');
-
-    element.classList.add('todo');
-    element.innerHTML = `
-        <h3>${todo.title}</h3>
-        <p>${todo.description}</p>
-        <p>Due Date: ${todo.dueDate}</p>
-        <p>Priority: ${todo.priority}</p>
-        <p>Is Done: ${todo.status}</p>
-      `;
-
-    todosContainer.appendChild(element);
-  };
-
   const todoTitle = prompt('Enter todo title');
   const todoDescription = prompt('Enter todo description');
   const todoDueDate = prompt('Enter todo due date');
   const todoPriority = prompt('Enter todo priority');
 
   if (todoTitle && todoDescription && todoDueDate && todoPriority) {
-    const todo = createTodo(todoTitle, todoDescription, todoDueDate, todoPriority);
-    addTodoToCurrentProject(todo);
-    renderTodo(todo);
+    const todo = createTodo(todoTitle, todoDescription, currentProject.title, todoDueDate, todoPriority);
+    projectModule.addTodoToCurrentProject(todo);
+    renderTodos();
   }
 });

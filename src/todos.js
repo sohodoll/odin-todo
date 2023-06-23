@@ -1,15 +1,10 @@
-import { projectModule } from './app';
-
-export const createTodo = (title, description, dueDate, priority) => {
+export const createTodo = (title, description, project, dueDate, priority) => {
   return {
     title,
     description,
     dueDate,
     priority,
+    project,
     status: 'incomplete',
   };
-};
-
-export const addTodoToCurrentProject = (todo) => {
-  projectModule.addTodoToProject(todo);
 };
